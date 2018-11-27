@@ -1,0 +1,18 @@
+let file be a File from "./what/ever.raw"
+let buffer
+encode file with utf8 into buffer
+
+let awesome be an Array from buffer
+for each awesome as index and byte do
+    log index
+end
+
+join array into another-variable
+read file as Buffer into temp
+push 3 into array
+
+let result
+let buffer be a String Buffer
+let file be a File from "./what/ever.raw"
+read file into buffer
+encode buffer with utf8 into result

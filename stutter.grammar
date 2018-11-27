@@ -1,0 +1,37 @@
+start: (sentence _NEWLINE)+
+
+sentence: "let" NAME ["be" ("a"|"an") type] -> let
+        | "let" NAME "be" ("a"|"an") type "and" "set" "it" "to" value -> let_set
+        | "let" NAME "be" ("a"|"an") type "from" value -> let_from
+        | "set" NAME "to" value -> set
+        | "comment" value+ -> comment
+        | "break" -> break
+        | NAME value (preposition value)* "into" NAME -> call_into
+        | NAME value (preposition value)* -> call
+        | "for" "each" value "as" names "do" block -> for_each
+
+
+block: _NEWLINE _INDENT (sentence _NEWLINE)+ _DEDENT "end"
+
+?preposition: NAME
+
+names: NAME [("," NAME)* "and" NAME]
+
+?value: NUMBER -> number
+     | NAME -> word
+     | value "as" type -> cast
+     | value ("," value)* "and" value -> list
+     | STRING -> string
+
+type: TYPE
+    | TYPE+ -> combined_type
+
+
+NAME: /[a-z][a-z0-9\-]*/
+TYPE: /[A-Z][a-z\-]+/
+STRING: /"(?:[^\\"\n]|\\.)*"/
+_NEWLINE: /\n[ ]*/+
+_INDENT: "<INDENT>"
+_DEDENT: "<DEDENT>"
+%import common.NUMBER
+%ignore " "
